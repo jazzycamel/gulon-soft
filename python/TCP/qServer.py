@@ -1,26 +1,47 @@
 from sys import argv, exit
 from PyQt4 import QtCore, QtGui, QtNetwork
-
+from time import sleep
 
 class ServerThread(QtCore.QThread):
     def __init__(self, socketDescriptor, parent):
         QtCore.QThread.__init__(self, parent)
 
         self.socketDescriptor = socketDescriptor
-                
+                        
     def run(self):
-        tcpSocket = QtNetwork.QTcpSocket()
-        if not tcpSocket.setSocketDescriptor(self.socketDescriptor):
+        self.tcpSocket = QtNetwork.QTcpSocket()
+        self.tcpSocket.readyRead.connect(self.readStream)
+        if not self.tcpSocket.setSocketDescriptor(self.socketDescriptor):
             self.emit(QtCore.SIGNAL("error(int)"), tcpSocket.error())
             return
-                      
+            
+        self.sendMsg('Hello World')
+        #print self.tcpSocket.state()
+        #sleep(5)
+        #self.sendMsg('and again...')
+        self.exec_()
+                
+    def sendMsg(self, data):
+        data=data or 'Message'
+        self.tcpSocket.writeData(data)
+        self.tcpSocket.waitForBytesWritten()
+        print "Written: ", data                              
+
+    def readStream(self):
+        data=self.tcpSocket.readLine()
+        print "Received: ", data        
+            
 class Server(QtNetwork.QTcpServer):
+
+    threadList=[]
+
     def __init__(self, parent=None):
         QtNetwork.QTcpServer.__init__(self, parent)
 
     def incomingConnection(self, socketDescriptor):
         thread = ServerThread(socketDescriptor, self)
-        thread.finished.connect(thread.deleteLater)
+        self.threadList.append(thread)
+        #thread.finished.connect(thread.deleteLater)
         thread.start()
 
 class ServerGUI(QtGui.QWidget):
@@ -29,7 +50,7 @@ class ServerGUI(QtGui.QWidget):
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
-        
+              
         self.setGeometry(50,50,150,150)
         self.setWindowTitle('QServer')
         
@@ -46,6 +67,13 @@ class ServerGUI(QtGui.QWidget):
         self.serverCtrl.clicked.connect(self.ctrlServer)
         self.vLayout.addWidget(self.serverCtrl)        
         
+        self.sendButton=QtGui.QPushButton('Send')
+        #self.sendButton.clicked.connect(self.sendMsg)
+        self.vLayout.addWidget(self.sendButton)
+        
+        self.serverTrace=QtGui.QTextEdit()
+        self.vLayout.addWidget(self.serverTrace)
+        
     def ctrlServer(self):    
         if not self._running:
             self._server = Server()
@@ -59,6 +87,8 @@ class ServerGUI(QtGui.QWidget):
                 self.serverCtrl.setText('Stop Server')
                 self._running=True    
         else:
+            for thread in self._server.threadList:
+                thread.exit()
             self._server.close()
             self.close()
      
