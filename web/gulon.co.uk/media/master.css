@@ -98,3 +98,12 @@ code {
 #subHead {
   padding-left: 10px;    
 }
+
+#validIcons {
+  text-align: center;
+  padding-top: 10px;  
+}
+
+#validIcons a, #validIcons img {
+  border: none;    
+}
