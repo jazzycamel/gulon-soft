@@ -1,0 +1,100 @@
+/* GENERAL STYLES */
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Arab;
+}
+
+body {
+    background: rgb(26,26,25);
+    padding: 40px 20px 40px 20px;
+}
+
+div {
+  background: white;
+}
+
+a {
+  color: rgb(136,152,0);
+  text-decoration: none;    
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background: rgb(191,213,0);
+  font-family: courier;
+  display: block;
+  padding: 5px;
+  margin: 4px 5px 4px 5px;
+}
+
+/* CLASS STYLES */
+
+.greyOnGrey {
+  background: rgb(17,17,17);    
+  color: rgb(72,78,66);
+  padding: 10px 10px 10px 20px;
+}
+
+.greyOnGrey a {
+  color: rgb(137,137,124);  
+  text-decoration: none;
+}
+
+.greyOnGrey a:hover {
+  color: rgb(205,205,191);  
+  text-decoration: underline;
+}
+
+.greyOnGrey .headLink {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.greyOnGrey .headLink:hover {
+  text-decoration: none;
+}
+
+.whiteOnGreen {
+  background: rgb(166,186,0);
+  border-width: 5px 0 0 0;
+  border-style: solid;
+  border-color: rgb(136,152,0);
+  color: rgb(214,226,110);
+  padding: 10px 10px 10px 20px;
+}
+
+.whiteOnGreen a {
+  color: white;
+  text-decoration: none;
+}
+
+.whiteOnGreen a:hover {
+  text-decoration: underline;
+}
+
+.whiteOnGreen .boxLink {
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.whiteOnGreen .boxLink:hover {
+  background: rgb(136,152,0);
+  text-decoration: none;
+}
+
+.blackOnWhite {
+  color: black;
+  padding: 10px 10px 10px 10px;
+}
+
+/* UNIQUE STYLES */
+
+#subHead {
+  padding-left: 10px;    
+}

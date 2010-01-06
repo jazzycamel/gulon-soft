@@ -80,6 +80,7 @@ class ServerGUI(QtGui.QWidget):
               
         self.setGeometry(50,50,150,150)
         self.setWindowTitle('QServer')
+        #self.setWindowIcon(QtGui.QIcon('../../logo.png'))
         
         self.vLayout=QtGui.QVBoxLayout()
         self.setLayout(self.vLayout)
