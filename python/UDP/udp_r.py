@@ -1,8 +1,7 @@
 from sys import argv
 
-#from QtCore import
 from PyQt4.QtNetwork import QUdpSocket
-from PyQt4.QtGui import QApplication, QWidget, QTextEdit, QVBoxLayout
+from PyQt4.QtGui import QApplication, QWidget, QTextEdit, QVBoxLayout, QIcon
 
 class UdpRx(QWidget):
     def __init__(self, parent=None):
@@ -10,6 +9,7 @@ class UdpRx(QWidget):
 
         self.setWindowTitle("UDP Receive")
         self.setGeometry(300,300,300,300)
+        self.setWindowIcon(QIcon('g-square.png'))
 
         self.us=QUdpSocket(self)
         self.us.bind(5000)
@@ -28,6 +28,8 @@ class UdpRx(QWidget):
         while self.us.hasPendingDatagrams():
             datagram, host, port=self.us.readDatagram(self.us.pendingDatagramSize())
             self.trace.append("%s:%s -> %s" % (host.toString(), port, datagram))
+            if datagram.strip()=="::kill::":
+                self.close()
 
 app=QApplication(argv)
 u=UdpRx()

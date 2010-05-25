@@ -1,7 +1,6 @@
 from sys import argv
 
-#from PyQt4.QtCore import 
-from PyQt4.QtGui import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit
+from PyQt4.QtGui import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QIcon
 from PyQt4.QtNetwork import QUdpSocket, QHostAddress
 
 class UdpTx(QWidget):
@@ -9,7 +8,7 @@ class UdpTx(QWidget):
         QWidget.__init__(self, parent)
 
         self.setWindowTitle("UDP Transmit")
-        #self.setGeometry(300,300,300,300)
+        self.setWindowIcon(QIcon('g-square.png'))
 
         self.us=QUdpSocket(self)
         self.host=QHostAddress(QHostAddress.LocalHost)
@@ -21,6 +20,7 @@ class UdpTx(QWidget):
         send.clicked.connect(self.udpSend)
 
         self.datagram=QLineEdit()
+        self.datagram.returnPressed.connect(self.udpSend)
 
         l=QVBoxLayout()
         l.addWidget(self.datagram)
