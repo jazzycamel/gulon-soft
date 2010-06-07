@@ -1,5 +1,7 @@
 from PyQt4.QtGui import QMainWindow, QIcon, QAction, QKeySequence, QMessageBox, QSplitter
-from PyQt4.QtCore import QString, QChar
+from PyQt4.QtGui import QTableView, QAbstractItemView, QStandardItemModel, QItemSelectionModel
+from PyQt4.QtGui import QTextEdit
+from PyQt4.QtCore import QString, QChar, Qt
 from GmCore import *
 
 class GmApp(QMainWindow):
@@ -13,6 +15,7 @@ class GmApp(QMainWindow):
         self.createStatusBar()
         self.createMenus()
         self.createToolbars()
+        self.createWidgets()
         self.createLayouts()
 
     def createActions(self):
@@ -89,8 +92,32 @@ class GmApp(QMainWindow):
         self.toolbar.addAction(self.previousAction)
         self.toolbar.addAction(self.nextAction)
 
+    def createWidgets(self):
+        self.table=QTableView()
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setGridStyle(Qt.NoPen)
+        
+        self.model = QStandardItemModel(8, 3, self)
+        self.model.setHeaderData(0, Qt.Horizontal, "From")
+        self.model.setHeaderData(1, Qt.Horizontal, "Subject")
+        self.model.setHeaderData(2, Qt.Horizontal, "Received")
+        
+        self.table.setModel(self.model)
+        self.selectionModel = QItemSelectionModel(self.model)
+        self.selectionModel.SelectionFlag=0x0020
+        self.table.setSelectionModel(self.selectionModel)
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.verticalHeader().setVisible(False)
+        self.table.setSortingEnabled(True)
+        self.table.setAlternatingRowColors(True) 
+        
+        self.textEdit=QTextEdit()
+        
     def createLayouts(self):
-        self.centralWidget=QSplitter()
+        self.centralWidget=QSplitter(Qt.Vertical)
+        self.centralWidget.addWidget(self.table)
+        self.centralWidget.addWidget(self.textEdit)
         
         self.setCentralWidget(self.centralWidget)
 
