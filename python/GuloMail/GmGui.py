@@ -19,7 +19,7 @@ class GmApp(QMainWindow):
         self.newAction=QAction("&New", self, shortcut=QKeySequence.New, statusTip="New")
         self.sendReceiveAction=QAction("Send / &Receive", self, shortcut="F9", statusTip="Send / Receive")
         self.printAction=QAction("&Print...", self, shortcut="Ctrl+P", statusTip="Print")
-        self.quitAction=QAction("&Quit", self, shortcut=QKeySequence.Quit, statusTip="Quit", triggered=self.close) 
+        self.quitAction=QAction("&Quit", self, shortcut="Ctrl+Q", statusTip="Quit", triggered=self.close) 
 
         self.copyAction=QAction("&Copy", self, statusTip="Copy", shortcut=QKeySequence.Copy)
         self.deleteAction=QAction("&Delete", self, statusTip="Delete Message")
