@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QMainWindow, QIcon, QAction, QKeySequence, QMessageBox
+from PyQt4.QtGui import QMainWindow, QIcon, QAction, QKeySequence, QMessageBox, QSplitter
 from PyQt4.QtCore import QString, QChar
 from GmCore import *
 
@@ -90,7 +90,9 @@ class GmApp(QMainWindow):
         self.toolbar.addAction(self.nextAction)
 
     def createLayouts(self):
-        pass
+        self.centralWidget=QSplitter()
+        
+        self.setCentralWidget(self.centralWidget)
 
     def helpContents(self):
         print "Help"
