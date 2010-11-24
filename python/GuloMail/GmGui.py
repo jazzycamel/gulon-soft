@@ -1,6 +1,6 @@
 from PyQt4.QtGui import QMainWindow, QIcon, QAction, QKeySequence, QMessageBox, QSplitter
 from PyQt4.QtGui import QTableView, QAbstractItemView, QStandardItemModel, QItemSelectionModel
-from PyQt4.QtGui import QTextEdit
+from PyQt4.QtGui import QTextEdit, QTreeWidget, QTreeWidgetItem
 from PyQt4.QtCore import QString, QChar, Qt
 from GmCore import *
 
@@ -78,7 +78,9 @@ class GmApp(QMainWindow):
         self.toolbar=self.addToolBar('Main Toolbar')
         self.toolbar.setMovable(False)
         self.toolbar.addAction(self.newAction)
+        self.toolbar.addSeparator()
         self.toolbar.addAction(self.sendReceiveAction)
+        self.toolbar.addSeparator()
         self.toolbar.addAction(self.replyAction)
         self.toolbar.addAction(self.replyToAllAction)
         self.toolbar.addAction(self.forwardAction)
@@ -93,6 +95,7 @@ class GmApp(QMainWindow):
         self.toolbar.addAction(self.nextAction)
 
     def createWidgets(self):
+        ## Message Table
         self.table=QTableView()
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -112,15 +115,61 @@ class GmApp(QMainWindow):
         self.table.setSortingEnabled(True)
         self.table.setAlternatingRowColors(True) 
         
+        ## Folder Tree View
+        self.folderTree=QTreeWidget()
+        self.folderTree.setColumnCount(1)
+        self.folderTree.setHeaderLabel(QString('Folders'))
+
+        self.treeItem=QTreeWidgetItem()
+        self.treeItem.setText(0, 'Folders')
+
+        self.inbox=QTreeWidgetItem()
+        self.inbox.setText(0, 'Inbox')
+
+        self.deletedItems=QTreeWidgetItem()
+        self.deletedItems.setText(0, 'Deleted Items')
+
+        self.drafts=QTreeWidgetItem()
+        self.drafts.setText(0, 'Drafts')
+
+        self.junk=QTreeWidgetItem()
+        self.junk.setText(0, 'Junk')
+
+        self.outbox=QTreeWidgetItem()
+        self.outbox.setText(0, 'Outbox')
+
+        self.sent=QTreeWidgetItem()
+        self.sent.setText(0, 'Sent')
+        
+        self.treeItem.addChild(self.inbox)
+        self.treeItem.addChild(self.deletedItems)
+        self.treeItem.addChild(self.drafts)
+        self.treeItem.addChild(self.junk)
+        self.treeItem.addChild(self.outbox)
+        self.treeItem.addChild(self.sent)
+
+        self.folderTree.addTopLevelItem(self.treeItem)
+        self.folderTree.expandAll()
+        self.folderTree.setAnimated(True)
+
+        self.folderTree.setMaximumWidth(150)
+
+        ## Temp. placeholders 
         self.textEdit=QTextEdit()
+        self.textEdit2=QTextEdit()
         
     def createLayouts(self):
-        self.centralWidget=QSplitter(Qt.Vertical)
-        self.centralWidget.addWidget(self.table)
-        self.centralWidget.addWidget(self.textEdit)
-        
-        self.setCentralWidget(self.centralWidget)
+        self.mainSplitter=QSplitter()
+        self.setCentralWidget(self.mainSplitter)
 
+        self.mainSplitter.addWidget(self.folderTree)
+
+        self.messageSplitter=QSplitter(Qt.Vertical)
+        self.messageSplitter.addWidget(self.table)
+        self.messageSplitter.addWidget(self.textEdit2)
+
+        self.mainSplitter.addWidget(self.messageSplitter)
+        
     def helpContents(self):
         print "Help"
 
