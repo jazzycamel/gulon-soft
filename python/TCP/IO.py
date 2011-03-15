@@ -11,6 +11,10 @@ class Socket(QTcpSocket):
     def gone(self):
         print "Connection Closed..."
 
+    def put(self, d):
+        self.writeData(d)
+        while not self.waitForBytesWritten(): continue
+
 class Thread(QThread):
     def __init__(self, function, *argv, **kwargs):
         QThread.__init__(self)
@@ -21,8 +25,10 @@ class Thread(QThread):
     def run(self):
         self.function(self, *self.argv, **self.kwargs)
 
-class IO(object):
+class IO(QObject):
+    _put=pyqtSignal(str)
     def __init__(self, socket=None, queue=None, name=None, host=None, port=None):
+        QObject.__init__(self)
         self.name = name or '?'
         self._socket = socket
         self._queue = queue
@@ -37,8 +43,8 @@ class IO(object):
         return self.name
     
     def put(self, *a):
-        print 'put', self.name, a
-        self._socket.writeData(','.join([str(x) for x in a])+';')
+        d=','.join([str(x) for x in a])+';'
+        self._put.emit(d)       
 
     def get(self):
         """
@@ -69,11 +75,11 @@ class IO(object):
         print "Started", s.state()
         qput('started_msg', self._host, self._port)
         self._socket.readyRead.connect(self._read)
+        self._put.connect(self._socket.put)
         thread.exec_()
 
     def _read(self):
         d=self._socket.readLine().data()
-        print d
         if d.endswith(';'):
             if d=='bye_msg;':
                 self.put(d[:-1])
