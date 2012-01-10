@@ -4,6 +4,7 @@
   padding: 0;
   margin: 0;
   font-family: Arial, Arab;
+  font-size: 1em;
 }
 
 body {
@@ -15,6 +16,14 @@ div {
   background: white;
 }
 
+p {
+  margin-top: 5px;
+}
+
+ul {
+  margin-left: 20px;
+}
+
 a {
   color: rgb(136,152,0);
   text-decoration: none;    
@@ -24,12 +33,27 @@ a:hover {
   text-decoration: underline;
 }
 
-code {
+code.shell {
   background: rgb(191,213,0);
   font-family: courier;
   display: block;
   padding: 5px;
   margin: 4px 5px 4px 5px;
+}
+
+h3 {
+  margin-top: 15px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+hr {
+  width: 50%;
+  margin: 25px auto 25px auto;
 }
 
 /* CLASS STYLES */
@@ -93,7 +117,21 @@ code {
   padding: 10px 10px 10px 10px;
 }
 
+span.code {
+  font-weight: bold;
+}
+
 /* UNIQUE STYLES */
+
+#page {
+  width: 900px;
+  margin-left: auto;
+  margin-right:auto;
+}
+
+#footer {
+  clear: both;
+}
 
 #subHead {
   padding-left: 10px;    
@@ -101,9 +139,32 @@ code {
 
 #validIcons {
   text-align: center;
-  padding-top: 10px;  
+  padding-top: 10px; 
+  background: rgb(26,26,25); 
+  margin: 0;
 }
 
 #validIcons a, #validIcons img {
   border: none;    
+}
+
+#projects-menu {
+  float: left;
+  width: 140px;
+}
+
+#projects-menu ul{
+  list-style: none;
+  margin-left: 10px;
+}
+
+#projects-content {
+  width: 720px;
+  float: right;
+  text-align: justify;
+  padding: 0 0 10px 10px;
+  border-width: 0 0px 0 2px;
+  border-color: rgb(136,152,0);
+  border-style: solid;
+  min-height: 100px;
 }
