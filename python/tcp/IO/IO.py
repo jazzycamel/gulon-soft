@@ -35,6 +35,7 @@ class IO(QObject):
         self._host = host or environ.get('SERVER_HOST','')
         self._port = port or environ.get('SERVER_PORT','')
         self._working = True
+        self._buffer=""
         self._queue = queue or Queue()
         self.t = Thread(self._work)
         self.t.start()
@@ -78,15 +79,32 @@ class IO(QObject):
         self._put.connect(self._socket.put)
         thread.exec_()
 
+    #def _read(self):
+    #    d=self._socket.readLine().data()
+    #    if d.endswith(';'):
+    #        if d=='bye_msg;':
+    #            self.put(d[:-1])
+    #            self._socket.close()
+    #            self._qput('finished_msg')
+    #        else:
+    #            self._qput(*d[:-1].split(','))
+
     def _read(self):
-        d=self._socket.readLine().data()
-        if d.endswith(';'):
+        self._buffer+=self._socket.readLine().data()
+        msgs=self._buffer.split(';')
+        limit=len(msgs)
+        if self._buffer.endswith(';'): self._buffer=""
+        else:
+            self._buffer=msgs[-1]
+            limit-=1
+        for i in range(0,limit):
+            if msgs[i]=='': continue
+            d=msgs[i]+';'
             if d=='bye_msg;':
                 self.put(d[:-1])
                 self._socket.close()
                 self._qput('finished_msg')
-            else:
-                self._qput(*d[:-1].split(','))
+            else: self._qput(*d[:-1].split(','))
 
 class ClientIO(IO):
     def _connect(self):
