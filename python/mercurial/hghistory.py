@@ -1,4 +1,4 @@
-# This has been tested against Mercurial version 2.0.1
+# This has been tested against Mercurial versions 1.3 and 2.0.1
 from mercurial import hg, ui, commands
 
 class Hg(object):
