@@ -38,6 +38,7 @@ class PaletteViewer(QTableWidget):
         self.setColumnCount(len(_GROUPS)+1)
         self.setHorizontalHeaderLabels(['Role']+_GROUPS.keys())
         self.setFrameStyle(QFrame.NoFrame)
+        self.setFocusPolicy(Qt.NoFocus)
 
         palette=self.palette()
 
