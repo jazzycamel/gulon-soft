@@ -6,11 +6,23 @@ from PyQt4.QtCore import *
 from PyQt4.QtNetwork import *
 from os import environ
 from random import randint
+import platform
 
 DISCOVERY_MESSAGE  = "DISC_MSG;"
 DISCOVERY_RESPONSE = "DISC_RESP"
 
 AUDOMATON_UDP_PORT = environ.get('AUDOMATON_UDP_PORT', 41513)
+
+BROADCAST=[]
+if platform.system()=='Windows':
+    import ipaddr
+    for addr in QNetworkInterface.allAddresses():
+        if addr.toString().startswith('127'): continue
+        try:
+            network=ipaddr.IPv4Network("{0}/24".format(addr.toString()))
+            BROADCAST.append(QHostAddress(str(network.broadcast)))
+        except ipaddr.AddressValueError: continue
+else: BROADCAST.append(QHostAddress.Broadcast)
 
 class Client(QObject):
     def __init__(self, parent=None, **kwargs):
@@ -26,7 +38,7 @@ class Client(QObject):
 
     @pyqtSlot()
     def discover(self):
-        self._discoverSocket.writeDatagram(DISCOVERY_MESSAGE, QHostAddress.Broadcast, AUDOMATON_UDP_PORT)
+        for b in BROADCAST: self._discoverSocket.writeDatagram(DISCOVERY_MESSAGE, b, AUDOMATON_UDP_PORT)
 
     @pyqtSlot()
     def discovered(self):
