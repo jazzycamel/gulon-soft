@@ -26,10 +26,11 @@ class Server(QTcpServer):
             qApp.quit()
 
         self._discoverSocket=QUdpSocket(self, readyRead=self.discover)
-        self._discoverSocket.bind(41513, QUdpSocket.ShareAddress)
+        print "Bind:", self._discoverSocket.bind(41513, QUdpSocket.ShareAddress)
 
     @pyqtSlot()
     def discover(self):
+        print "Discover"
         while self._discoverSocket.hasPendingDatagrams():
             data,host,port=self._discoverSocket.readDatagram(self._discoverSocket.pendingDatagramSize())
 
@@ -45,6 +46,7 @@ class Server(QTcpServer):
 
     @pyqtSlot()
     def tcpHandler(self):
+        print "New connection..."
         s=self.nextPendingConnection()
         s.readyRead.connect(self.read)
         self._sockets.append(s)
