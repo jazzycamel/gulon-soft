@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Server Test Page</title>
+
+    <script type='text/javascript' src='jquery-1.10.2.min.js'></script>
+    <script type='text/javascript'>
+      success=function(){}
+
+      $(function(){
+        $('#postTest').click(function(){
+          $.ajax({
+            type: "POST",
+            url: 'ajax',
+            data: { test: 'data'},
+            success: success,
+            dataType: 'json'
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Server Test</h1>
+    <p>
+      Testing the server...
+    </p>
+    <img src="glass.png" />
+    <p>
+      <button onclick="postTest()" id='postTest'>Post Test</button>
+    </p>
+
+    <form method="post" action='ajax'>
+      <input type='text' name='testfield' />
+      <input type='submit' value='Submit' />
+    </form>
+  </body>
+</html>
