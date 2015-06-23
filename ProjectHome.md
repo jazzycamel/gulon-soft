@@ -1,0 +1,2 @@
+# Project Summary #
+This project page is simply a place to house my code experiments and musings. I don't claim anything here to be truly original or ground breaking, but if anything here can be of any vague use to anyone then I would like to share it as I know that if others hadn't shared there knowledge openly then I wouldn't have got anywhere as a programmer!
